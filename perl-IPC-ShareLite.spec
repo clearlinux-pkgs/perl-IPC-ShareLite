@@ -4,15 +4,15 @@
 #
 Name     : perl-IPC-ShareLite
 Version  : 0.17
-Release  : 1
+Release  : 2
 URL      : https://cpan.metacpan.org/authors/id/A/AN/ANDYA/IPC-ShareLite-0.17.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AN/ANDYA/IPC-ShareLite-0.17.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libi/libipc-sharelite-perl/libipc-sharelite-perl_0.17-4.debian.tar.xz
 Summary  : Lightweight interface to shared memory
 Group    : Development/Tools
 License  : Artistic-1.0-Perl
-Requires: perl-IPC-ShareLite-lib
-Requires: perl-IPC-ShareLite-man
+Requires: perl-IPC-ShareLite-lib = %{version}-%{release}
+BuildRequires : buildreq-cpan
 
 %description
 IPC::ShareLite 0.17
@@ -23,6 +23,16 @@ system must support SysV IPC (shared memory and semaphores) in order to
 use this module.
 COPYRIGHT & TERMS
 
+%package dev
+Summary: dev components for the perl-IPC-ShareLite package.
+Group: Development
+Requires: perl-IPC-ShareLite-lib = %{version}-%{release}
+Provides: perl-IPC-ShareLite-devel = %{version}-%{release}
+
+%description dev
+dev components for the perl-IPC-ShareLite package.
+
+
 %package lib
 Summary: lib components for the perl-IPC-ShareLite package.
 Group: Libraries
@@ -31,19 +41,11 @@ Group: Libraries
 lib components for the perl-IPC-ShareLite package.
 
 
-%package man
-Summary: man components for the perl-IPC-ShareLite package.
-Group: Default
-
-%description man
-man components for the perl-IPC-ShareLite package.
-
-
 %prep
-tar -xf %{SOURCE1}
-cd ..
 %setup -q -n IPC-ShareLite-0.17
-mkdir -p %{_topdir}/BUILD/IPC-ShareLite-0.17/deblicense/
+cd ..
+%setup -q -T -D -n IPC-ShareLite-0.17 -b 1
+mkdir -p deblicense/
 mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/IPC-ShareLite-0.17/deblicense/
 
 %build
@@ -69,9 +71,9 @@ make TEST_VERBOSE=1 test
 %install
 rm -rf %{buildroot}
 if test -f Makefile.PL; then
-make pure_install PERL_INSTALL_ROOT=%{buildroot}
+make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
-./Build install --installdirs=site --destdir=%{buildroot}
+./Build install --installdirs=vendor --destdir=%{buildroot}
 fi
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -depth -type d -exec rmdir {} 2>/dev/null ';'
@@ -80,13 +82,13 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/x86_64-linux-thread-multi/IPC/ShareLite.pm
-/usr/lib/perl5/site_perl/5.26.1/x86_64-linux-thread-multi/auto/IPC/ShareLite/autosplit.ix
+/usr/lib/perl5/vendor_perl/5.26.1/x86_64-linux-thread-multi/IPC/ShareLite.pm
+/usr/lib/perl5/vendor_perl/5.26.1/x86_64-linux-thread-multi/auto/IPC/ShareLite/autosplit.ix
+
+%files dev
+%defattr(-,root,root,-)
+/usr/share/man/man3/IPC::ShareLite.3
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib/perl5/site_perl/5.26.1/x86_64-linux-thread-multi/auto/IPC/ShareLite/ShareLite.so
-
-%files man
-%defattr(-,root,root,-)
-/usr/share/man/man3/IPC::ShareLite.3
+/usr/lib/perl5/vendor_perl/5.26.1/x86_64-linux-thread-multi/auto/IPC/ShareLite/ShareLite.so
