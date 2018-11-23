@@ -4,7 +4,7 @@
 #
 Name     : perl-IPC-ShareLite
 Version  : 0.17
-Release  : 3
+Release  : 4
 URL      : https://cpan.metacpan.org/authors/id/A/AN/ANDYA/IPC-ShareLite-0.17.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AN/ANDYA/IPC-ShareLite-0.17.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libi/libipc-sharelite-perl/libipc-sharelite-perl_0.17-4.debian.tar.xz
