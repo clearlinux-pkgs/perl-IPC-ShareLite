@@ -4,7 +4,7 @@
 #
 Name     : perl-IPC-ShareLite
 Version  : 0.17
-Release  : 10
+Release  : 11
 URL      : https://cpan.metacpan.org/authors/id/A/AN/ANDYA/IPC-ShareLite-0.17.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AN/ANDYA/IPC-ShareLite-0.17.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libi/libipc-sharelite-perl/libipc-sharelite-perl_0.17-4.debian.tar.xz
@@ -28,6 +28,7 @@ Summary: dev components for the perl-IPC-ShareLite package.
 Group: Development
 Requires: perl-IPC-ShareLite-lib = %{version}-%{release}
 Provides: perl-IPC-ShareLite-devel = %{version}-%{release}
+Requires: perl-IPC-ShareLite = %{version}-%{release}
 
 %description dev
 dev components for the perl-IPC-ShareLite package.
@@ -46,7 +47,7 @@ lib components for the perl-IPC-ShareLite package.
 cd ..
 %setup -q -T -D -n IPC-ShareLite-0.17 -b 1
 mkdir -p deblicense/
-mv %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/IPC-ShareLite-0.17/deblicense/
+cp -r %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/IPC-ShareLite-0.17/deblicense/
 
 %build
 export http_proxy=http://127.0.0.1:9/
