@@ -4,14 +4,15 @@
 #
 Name     : perl-IPC-ShareLite
 Version  : 0.17
-Release  : 11
+Release  : 12
 URL      : https://cpan.metacpan.org/authors/id/A/AN/ANDYA/IPC-ShareLite-0.17.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AN/ANDYA/IPC-ShareLite-0.17.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libi/libipc-sharelite-perl/libipc-sharelite-perl_0.17-4.debian.tar.xz
 Summary  : Lightweight interface to shared memory
 Group    : Development/Tools
-License  : Artistic-1.0-Perl
-Requires: perl-IPC-ShareLite-lib = %{version}-%{release}
+License  : Artistic-1.0 Artistic-1.0-Perl GPL-1.0
+Requires: perl-IPC-ShareLite-license = %{version}-%{release}
+Requires: perl-IPC-ShareLite-perl = %{version}-%{release}
 BuildRequires : buildreq-cpan
 
 %description
@@ -26,7 +27,6 @@ COPYRIGHT & TERMS
 %package dev
 Summary: dev components for the perl-IPC-ShareLite package.
 Group: Development
-Requires: perl-IPC-ShareLite-lib = %{version}-%{release}
 Provides: perl-IPC-ShareLite-devel = %{version}-%{release}
 Requires: perl-IPC-ShareLite = %{version}-%{release}
 
@@ -34,26 +34,36 @@ Requires: perl-IPC-ShareLite = %{version}-%{release}
 dev components for the perl-IPC-ShareLite package.
 
 
-%package lib
-Summary: lib components for the perl-IPC-ShareLite package.
-Group: Libraries
+%package license
+Summary: license components for the perl-IPC-ShareLite package.
+Group: Default
 
-%description lib
-lib components for the perl-IPC-ShareLite package.
+%description license
+license components for the perl-IPC-ShareLite package.
+
+
+%package perl
+Summary: perl components for the perl-IPC-ShareLite package.
+Group: Default
+Requires: perl-IPC-ShareLite = %{version}-%{release}
+
+%description perl
+perl components for the perl-IPC-ShareLite package.
 
 
 %prep
 %setup -q -n IPC-ShareLite-0.17
-cd ..
-%setup -q -T -D -n IPC-ShareLite-0.17 -b 1
+cd %{_builddir}
+tar xf %{_sourcedir}/libipc-sharelite-perl_0.17-4.debian.tar.xz
+cd %{_builddir}/IPC-ShareLite-0.17
 mkdir -p deblicense/
-cp -r %{_topdir}/BUILD/debian/* %{_topdir}/BUILD/IPC-ShareLite-0.17/deblicense/
+cp -r %{_builddir}/debian/* %{_builddir}/IPC-ShareLite-0.17/deblicense/
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
+export LANG=C.UTF-8
 if test -f Makefile.PL; then
 %{__perl} Makefile.PL
 make  %{?_smp_mflags}
@@ -63,7 +73,7 @@ else
 fi
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -71,6 +81,8 @@ make TEST_VERBOSE=1 test
 
 %install
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/perl-IPC-ShareLite
+cp %{_builddir}/IPC-ShareLite-0.17/deblicense/copyright %{buildroot}/usr/share/package-licenses/perl-IPC-ShareLite/8934406c68d77e1e2b8b6b7b301b19d6b3898eb7
 if test -f Makefile.PL; then
 make pure_install PERL_INSTALL_ROOT=%{buildroot} INSTALLDIRS=vendor
 else
@@ -83,13 +95,17 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/x86_64-linux-thread-multi/IPC/ShareLite.pm
-/usr/lib/perl5/vendor_perl/5.28.2/x86_64-linux-thread-multi/auto/IPC/ShareLite/autosplit.ix
 
 %files dev
 %defattr(-,root,root,-)
 /usr/share/man/man3/IPC::ShareLite.3
 
-%files lib
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/perl-IPC-ShareLite/8934406c68d77e1e2b8b6b7b301b19d6b3898eb7
+
+%files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.28.2/x86_64-linux-thread-multi/auto/IPC/ShareLite/ShareLite.so
+/usr/lib/perl5/vendor_perl/5.30.1/x86_64-linux-thread-multi/IPC/ShareLite.pm
+/usr/lib/perl5/vendor_perl/5.30.1/x86_64-linux-thread-multi/auto/IPC/ShareLite/ShareLite.so
+/usr/lib/perl5/vendor_perl/5.30.1/x86_64-linux-thread-multi/auto/IPC/ShareLite/autosplit.ix
