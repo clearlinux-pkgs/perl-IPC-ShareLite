@@ -4,7 +4,7 @@
 #
 Name     : perl-IPC-ShareLite
 Version  : 0.17
-Release  : 21
+Release  : 22
 URL      : https://cpan.metacpan.org/authors/id/A/AN/ANDYA/IPC-ShareLite-0.17.tar.gz
 Source0  : https://cpan.metacpan.org/authors/id/A/AN/ANDYA/IPC-ShareLite-0.17.tar.gz
 Source1  : http://http.debian.net/debian/pool/main/libi/libipc-sharelite-perl/libipc-sharelite-perl_0.17-4.debian.tar.xz
@@ -106,6 +106,4 @@ find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 
 %files perl
 %defattr(-,root,root,-)
-/usr/lib/perl5/vendor_perl/5.34.0/x86_64-linux-thread-multi/IPC/ShareLite.pm
-/usr/lib/perl5/vendor_perl/5.34.0/x86_64-linux-thread-multi/auto/IPC/ShareLite/ShareLite.so
-/usr/lib/perl5/vendor_perl/5.34.0/x86_64-linux-thread-multi/auto/IPC/ShareLite/autosplit.ix
+/usr/lib/perl5/*
